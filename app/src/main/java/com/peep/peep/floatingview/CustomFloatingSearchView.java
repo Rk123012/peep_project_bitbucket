@@ -64,6 +64,7 @@ import com.arlib.floatingsearchview.util.adapter.TextWatcherAdapter;
 import com.arlib.floatingsearchview.util.view.MenuView;
 import com.arlib.floatingsearchview.util.view.SearchInputView;
 import com.bartoszlipinski.viewpropertyobjectanimator.ViewPropertyObjectAnimator;
+import com.peep.peep.Map.LocationMap;
 import com.peep.peep.R;
 
 import java.lang.annotation.Retention;
@@ -240,7 +241,7 @@ public class CustomFloatingSearchView extends FrameLayout {
          *
          * @param searchSuggestion
          */
-        void onSuggestionClicked(SearchSuggestion searchSuggestion);
+        void onSuggestionClicked(LocationMap searchSuggestion);
 
         /**
          * Called when the current search has completed
@@ -1276,7 +1277,7 @@ public class CustomFloatingSearchView extends FrameLayout {
                 new SearchCustomAdapter.Listener() {
 
                     @Override
-                    public void onItemSelected(SearchSuggestion item) {
+                    public void onItemSelected(LocationMap item) {
                         if (mSearchListener != null) {
                             mSearchListener.onSuggestionClicked(item);
                         }
@@ -1286,9 +1287,9 @@ public class CustomFloatingSearchView extends FrameLayout {
 
                             mSkipTextChangeEvent = true;
                             if (mIsTitleSet) {
-                                setSearchBarTitle(item.getBody());
+                                setSearchBarTitle(item.getName());
                             } else {
-                                setSearchText(item.getBody());
+                                setSearchText(item.getName());
                             }
 
                             setSearchFocusedInternal(false);
@@ -1296,9 +1297,9 @@ public class CustomFloatingSearchView extends FrameLayout {
                     }
 
                     @Override
-                    public void onMoveItemToSearchClicked(SearchSuggestion item) {
+                    public void onMoveItemToSearchClicked(LocationMap item) {
 
-                        setQueryText(item.getBody());
+                        setQueryText(item.getName());
                     }
                 });
         refreshShowMoveUpSuggestion();
@@ -1331,11 +1332,11 @@ public class CustomFloatingSearchView extends FrameLayout {
      *
      * @param newSearchSuggestions a list containing the new suggestions
      */
-    public void swapSuggestions(final List<? extends SearchSuggestion> newSearchSuggestions) {
+    public void swapSuggestions(final List<? extends LocationMap> newSearchSuggestions) {
         swapSuggestions(newSearchSuggestions, true);
     }
 
-    private void swapSuggestions(final List<? extends SearchSuggestion> newSearchSuggestions,
+    private void swapSuggestions(final List<? extends LocationMap> newSearchSuggestions,
                                  final boolean withAnim) {
 
         mSuggestionsList.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -1363,7 +1364,7 @@ public class CustomFloatingSearchView extends FrameLayout {
     }
 
     //returns true if the suggestion items occupy the full RecyclerView's height, false otherwise
-    private boolean updateSuggestionsSectionHeight(List<? extends SearchSuggestion>
+    private boolean updateSuggestionsSectionHeight(List<? extends LocationMap>
                                                            newSearchSuggestions, boolean withAnim) {
 
         final int cardTopBottomShadowPadding = Util.dpToPx(CARD_VIEW_CORNERS_AND_TOP_BOTTOM_SHADOW_HEIGHT);
@@ -1416,7 +1417,7 @@ public class CustomFloatingSearchView extends FrameLayout {
 
     //returns the cumulative height that the current suggestion items take up or the given max if the
     //results is >= max. The max option allows us to avoid doing unnecessary and potentially long calculations.
-    private int calculateSuggestionItemsHeight(List<? extends SearchSuggestion> suggestions, int max) {
+    private int calculateSuggestionItemsHeight(List<? extends LocationMap> suggestions, int max) {
 
         //todo
         // 'i < suggestions.size()' in the below 'for' seems unneeded, investigate if there is a use for it.
@@ -1450,7 +1451,7 @@ public class CustomFloatingSearchView extends FrameLayout {
      * then clears its suggestion items.
      */
     public void clearSuggestions() {
-        swapSuggestions(new ArrayList<SearchSuggestion>());
+        swapSuggestions(new ArrayList<LocationMap>());
     }
 
     public void clearSearchFocus() {
@@ -1892,7 +1893,7 @@ public class CustomFloatingSearchView extends FrameLayout {
 
     static class SavedState extends BaseSavedState {
 
-        private List<? extends SearchSuggestion> suggestions = new ArrayList<>();
+        private List<? extends LocationMap> suggestions = new ArrayList<>();
         private boolean isFocused;
         private String query;
         private int queryTextSize;

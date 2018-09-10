@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.arlib.floatingsearchview.util.Util;
+import com.peep.peep.Map.LocationMap;
 import com.peep.peep.R;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ import java.util.List;
 public class SearchCustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final String TAG = "SearchSuggestionsAdapter";
 
-    private List<? extends SearchSuggestion> mSearchSuggestions = new ArrayList<>();
+    private List<? extends LocationMap> mSearchSuggestions = new ArrayList<>();
 
     private Listener mListener;
 
@@ -36,17 +37,17 @@ public class SearchCustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public interface OnBindSuggestionCallback {
 
-        void onBindSuggestion(View suggestionView, ImageView leftIcon, TextView textView,
-                              SearchSuggestion item, int itemPosition);
+        void onBindSuggestion(View suggestionView, ImageView leftIcon, TextView textView, TextView textView2,
+                              LocationMap item, int itemPosition);
     }
 
     private OnBindSuggestionCallback mOnBindSuggestionCallback;
 
     public interface Listener {
 
-        void onItemSelected(SearchSuggestion item);
+        void onItemSelected(LocationMap item);
 
-        void onMoveItemToSearchClicked(SearchSuggestion item);
+        void onMoveItemToSearchClicked(LocationMap item);
     }
 
     public static class SearchSuggestionViewHolder extends RecyclerView.ViewHolder {
@@ -106,12 +107,12 @@ public class SearchCustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         DrawableCompat.setTint(mRightIconDrawable, Util.getColor(mContext, R.color.gray_active_icon));
     }
 
-    public void swapData(List<? extends SearchSuggestion> searchSuggestions) {
+    public void swapData(List<? extends LocationMap> searchSuggestions) {
         mSearchSuggestions = searchSuggestions;
         notifyDataSetChanged();
     }
 
-    public List<? extends SearchSuggestion> getDataSet() {
+    public List<? extends LocationMap> getDataSet() {
         return mSearchSuggestions;
     }
 
@@ -161,16 +162,17 @@ public class SearchCustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (!mShowRightMoveUpBtn) {
             viewHolder.rightIcon.setEnabled(false);
             viewHolder.rightIcon.setVisibility(View.INVISIBLE);
+            viewHolder.body_detail.setEnabled(true);
+            viewHolder.body_detail.setVisibility(View.VISIBLE);
         } else {
             viewHolder.rightIcon.setEnabled(true);
             viewHolder.rightIcon.setVisibility(View.VISIBLE);
-            viewHolder.body_detail.setEnabled(true);
-            viewHolder.body_detail.setVisibility(View.VISIBLE);
+
         }
 
-        SearchSuggestion suggestionItem = mSearchSuggestions.get(position);
-        viewHolder.body.setText(suggestionItem.getBody());
-        viewHolder.body_detail.setText(suggestionItem.getBody());
+        LocationMap suggestionItem = mSearchSuggestions.get(position);
+        viewHolder.body.setText(suggestionItem.getName());
+        viewHolder.body_detail.setText(suggestionItem.getLocation());
 
         if(mTextColor != -1){
             viewHolder.body.setTextColor(mTextColor);
@@ -181,7 +183,7 @@ public class SearchCustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         if (mOnBindSuggestionCallback != null) {
-            mOnBindSuggestionCallback.onBindSuggestion(viewHolder.itemView, viewHolder.leftIcon, viewHolder.body,
+            mOnBindSuggestionCallback.onBindSuggestion(viewHolder.itemView, viewHolder.leftIcon, viewHolder.body,viewHolder.body_detail,
                     suggestionItem, position);
         }
     }

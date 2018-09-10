@@ -118,7 +118,7 @@ public class FindPlaceFragment extends Fragment implements OnMapReadyCallback, V
         this.locationList = locationList;
         mSearchView.setOnBindSuggestionCallback(new SearchCustomAdapter.OnBindSuggestionCallback() {
             @Override
-            public void onBindSuggestion(View suggestionView, ImageView leftIcon, TextView textView, SearchSuggestion item, int itemPosition) {
+            public void onBindSuggestion(View suggestionView, ImageView leftIcon, TextView textView,TextView textView2, LocationMap item, int itemPosition) {
 
 
                     leftIcon.setImageDrawable(ResourcesCompat.getDrawable(getResources(),
@@ -134,21 +134,23 @@ public class FindPlaceFragment extends Fragment implements OnMapReadyCallback, V
         mSearchView.setOnQueryChangeListener(new CustomFloatingSearchView.OnQueryChangeListener() {
             @Override
             public void onSearchTextChanged(String oldQuery, final String newQuery) {
-                List<SearchSuggestion> list = new ArrayList<SearchSuggestion>();
+                List<LocationMap> list = new ArrayList<LocationMap>();
                 for (LocationMap item : locationList) {
                     if (item.getName().contains(newQuery)) {
-                        list.add(new SimpleSuggestions(item.getName()));
+                        list.add(item);
                     }
                 }
+
+
                 mSearchView.swapSuggestions(list);
             }
         });
 
         mSearchView.setOnSearchListener(new CustomFloatingSearchView.OnSearchListener() {
             @Override
-            public void onSuggestionClicked(SearchSuggestion searchSuggestion) {
-                Toast.makeText(context, "" + getLocationMap(searchSuggestion.getBody()).lat, Toast.LENGTH_SHORT).show();
-                setLOcationFocus(getLocationMap(searchSuggestion.getBody()));
+            public void onSuggestionClicked(LocationMap searchSuggestion) {
+                Toast.makeText(context, "" + searchSuggestion.getLat(), Toast.LENGTH_SHORT).show();
+                setLOcationFocus(searchSuggestion);
             }
 
             @Override
