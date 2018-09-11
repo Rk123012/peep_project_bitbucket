@@ -14,11 +14,7 @@ import javax.annotation.Nonnull;
 public class LoginModelImp {
 
     public void checkLogin(String userID, String password, final LoginModel loginModel) {
-        /*if (userID.isEmpty())
-            loginModel.onLoadUserDataError();
-        else loginModel.onLoadUserDataSuccess();*/
 
-        //without rx
         MyApolloClient.getMyApolloClient().query(
                 QueryLoginNewQuery.builder().email(userID).password(password).build()).
                 enqueue(new ApolloCall.Callback<QueryLoginNewQuery.Data>() {
@@ -34,7 +30,5 @@ public class LoginModelImp {
                         loginModel.onLoadUserDataError();
                     }
                 });
-       //with rx
-        //Rx2Apollo.from(QueryLoginNewQuery.builder().email(userID).password(password).build())
     }
 }

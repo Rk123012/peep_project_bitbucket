@@ -9,7 +9,8 @@ query QueryLoginNew(
 
     )
 
-    {  lastName
+    {
+      lastName
       firstName
       loginKey
       email

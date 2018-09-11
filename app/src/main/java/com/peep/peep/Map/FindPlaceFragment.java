@@ -53,6 +53,7 @@ public class FindPlaceFragment extends Fragment implements OnMapReadyCallback, V
     private CustomFloatingSearchView mSearchView;
     ArrayList<LocationMap> locationList;
 
+
     public FindPlaceFragment() {
         // Required empty public constructor
     }
