@@ -1,0 +1,35 @@
+query QueryCamera(
+$userIds:Int!,
+$toekn:String!)
+{
+camerasByUser(
+userId:$userIds
+token:$toekn
+)
+{
+    id
+    name
+    lat
+    lon
+    address
+    groups
+          {
+            id
+            name
+          }
+
+}
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
